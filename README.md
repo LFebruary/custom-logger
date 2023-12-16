@@ -40,9 +40,8 @@ final logger = CustomLogger.instance;
 Customize logging options:
 
 ```dart
-// Example: Setting log level prefixes
-CustomLogger.setInfoPrefixAndSuffix('ℹ️ ');
-CustomLogger.setErrorPrefixAndSuffix('❌ ');
+CustomLogger.setInfoPrefixAndSuffix('ℹ️');
+CustomLogger.setErrorPrefixAndSuffix('❌');
 ```
 
 Use the logger:
