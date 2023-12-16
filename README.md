@@ -69,7 +69,7 @@ The library provides several configuration options, including:
 - `setWarningTitle`
 - and more...
 
-Check the [API documentation](link/to/api/docs) for detailed information on available methods and their usage.
+Check the [API documentation](doc/api/index.html) for detailed information on available methods and their usage.
 
 ## Examples
 

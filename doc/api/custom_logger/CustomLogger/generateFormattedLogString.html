@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the generateFormattedLogString method from the CustomLogger class, for the Dart programming language.">
+  <title>generateFormattedLogString method - CustomLogger class - custom_logger library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">custom_logger</a></li>
+    <li><a href="../../custom_logger/custom_logger-library.html">custom_logger</a></li>
+    <li><a href="../../custom_logger/CustomLogger-class.html">CustomLogger</a></li>
+    <li class="self-crumb">generateFormattedLogString static method</li>
+  </ol>
+  <div class="self-name">generateFormattedLogString</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="custom_logger&#47;CustomLogger-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">generateFormattedLogString</span> static method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+<span class="name ">generateFormattedLogString</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="generateFormattedLogString-param-title"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-detail"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">detail</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-colorCode"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">colorCode</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-totalLength">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">totalLength</span> = <span class="default-value">128</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-fillCharacter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">fillCharacter</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-divider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">divider</span> = <span class="default-value">&#39; &#39;</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-prefixSuffix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">prefixSuffix</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-customStackTrace"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/StackTrace-class.html">StackTrace</a>?</span> <span class="parameter-name">customStackTrace</span>, </span></li>
+<li><span class="parameter" id="generateFormattedLogString-param-showCallerPathInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showCallerPathInfo</span> = <span class="default-value">true</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Generates a formatted log string with color coding and optional details.</p>
+<p><code>title</code> represents the main message content.</p>
+<p><code>detail</code> holds additional details to be logged.</p>
+<p><code>colorCode</code> is the ASCII code used for color formatting.</p>
+<p><code>totalLength</code> determines the total length of the log message (default: 128).</p>
+<p><code>fillCharacter</code> specifies the character used for filling empty spaces.</p>
+<p><code>divider</code> separates sections within the log message (default: ' ').</p>
+<p><code>prefixSuffix</code> represents optional content before and after the title.</p>
+<p><code>customStackTrace</code> is the stack trace for identifying the log origin.</p>
+<p><code>showCallerPathInfo</code> toggles displaying caller path information (default: true).</p>
+<p>Returns a formatted log string ready to be printed to the console.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">static String generateFormattedLogString(
+  String title,
+  String detail,
+  String colorCode, {
+  int totalLength = 128,
+  String? fillCharacter,
+  String divider = &#39; &#39;,
+  String? prefixSuffix,
+  StackTrace? customStackTrace,
+  bool showCallerPathInfo = true,
+}) {
+  final timestamp = DateFormat(&#39;HH:mm:ss:SSS&#39;).format(DateTime.now());
+  final titleLength = title.length;
+
+  int fillerLength = totalLength -
+      titleLength -
+      timestamp.length;
+
+  if (divider.isNotEmpty) {
+    fillerLength -= divider.length *
+        ((prefixSuffix?.isNotEmpty ?? false)
+            ? 3 * (prefixSuffix!.length) + (divider.length * 2)
+            : (divider.length * 2));
+  }
+  fillerLength = fillerLength.isEven ? fillerLength : fillerLength + 1;
+
+  final fill = ConsoleFormatter.fillText(fillerLength ~&#47; 2,
+      fillCharacter: fillCharacter);
+
+
+  final paddedTitle = prefixSuffix != null &amp;&amp; prefixSuffix.isNotEmpty
+      ? ConsoleFormatter.padLine(
+          &#39;$fill$divider$prefixSuffix$divider$title$divider$prefixSuffix$divider$fill&#39;)
+      : ConsoleFormatter.padLine(&#39;$fill$divider$title$divider$fill&#39;);
+
+  final formattedString = StringBuffer();
+  formattedString
+      .writeln(ConsoleFormatter.colorize(paddedTitle + timestamp, colorCode));
+  formattedString.writeln(
+      ConsoleFormatter.colorize(ConsoleFormatter.padLine(detail), colorCode));
+
+  if (showCallerPathInfo) {
+    final caller =
+        StackFrame.fromStackTrace(customStackTrace ?? StackTrace.current)[3];
+    final clickablePath =
+        &#39;package:${caller.package}&#47;${caller.packagePath}:${caller.line}:${caller.column}&#39;;
+    formattedString.writeln(ConsoleFormatter.colorize(
+        ConsoleFormatter.padLine(clickablePath), colorCode));
+  }
+
+  formattedString.writeln(ConsoleFormatter.colorize(
+      ConsoleFormatter.padLine(ConsoleFormatter.fillText(totalLength,
+          fillCharacter: fillCharacter)),
+      colorCode));
+
+  return formattedString.toString();
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">custom_logger</a></li>
+    <li><a href="../../custom_logger/custom_logger-library.html">custom_logger</a></li>
+    <li><a href="../../custom_logger/CustomLogger-class.html">CustomLogger</a></li>
+    <li class="self-crumb">generateFormattedLogString static method</li>
+</ol>
+
+
+    <h5>CustomLogger class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    custom_logger
+      0.0.1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
