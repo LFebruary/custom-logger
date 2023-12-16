@@ -1,0 +1,26 @@
+name: custom_logger
+description: >
+  A comprehensive Dart project that includes custom logger functionality
+  for enhanced console output formatting. It provides options to set log
+  levels, color codes, prefixes, suffixes, and more, allowing for tailored
+  logging behavior.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+
