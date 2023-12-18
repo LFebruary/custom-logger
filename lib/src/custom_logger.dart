@@ -1,5 +1,6 @@
 import 'package:custom_logger/src/console_formatter.dart';
 import 'package:custom_logger/src/models/console_log_level_text.dart';
+import 'package:custom_logger/src/models/custom_logger_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
@@ -11,8 +12,13 @@ class CustomLogger {
     instance.listeners.add(listener);
   }
 
+  static void reset() {
+    _singleton.listeners = [];
+    _singleton = CustomLogger();
+  }
+
   /// Singleton instance of the CustomLogger class
-  static final CustomLogger _singleton = CustomLogger();
+  static CustomLogger _singleton = CustomLogger();
 
   /// Retrieves the singleton instance of the CustomLogger class.
   static CustomLogger get instance => _singleton;
@@ -159,60 +165,33 @@ class CustomLogger {
   /// [showCallerPathInfo] toggles displaying caller path information (default: true).
   ///
   /// Returns a formatted log string ready to be printed to the console.
-  static String generateFormattedLogString(
+  static String _generateFormattedLogString(
     String title,
     String detail,
     String colorCode, {
-    int totalLength = 128,
+    int lineLength = 128,
     String? fillCharacter,
     String divider = ' ',
     String? prefixSuffix,
     StackTrace? customStackTrace,
     bool showCallerPathInfo = true,
   }) {
-    final timestamp = DateFormat('HH:mm:ss:SSS').format(DateTime.now());
-    final titleLength = title.length;
-
-    int fillerLength = totalLength -
-        titleLength -
-        timestamp.length;
-
-    if (divider.isNotEmpty) {
-      fillerLength -= divider.length *
-          ((prefixSuffix?.isNotEmpty ?? false)
-              ? 3 * (prefixSuffix!.length) + (divider.length * 2)
-              : (divider.length * 2));
-    }
-    fillerLength = fillerLength.isEven ? fillerLength : fillerLength + 1;
-
-    final fill = ConsoleFormatter.fillText(fillerLength ~/ 2,
-        fillCharacter: fillCharacter);
-
-
-    final paddedTitle = prefixSuffix != null && prefixSuffix.isNotEmpty
-        ? ConsoleFormatter.padLine(
-            '$fill$divider$prefixSuffix$divider$title$divider$prefixSuffix$divider$fill')
-        : ConsoleFormatter.padLine('$fill$divider$title$divider$fill');
-
     final formattedString = StringBuffer();
     formattedString
-        .writeln(ConsoleFormatter.colorize(paddedTitle + timestamp, colorCode));
-    formattedString.writeln(
-        ConsoleFormatter.colorize(ConsoleFormatter.padLine(detail), colorCode));
+        .writeln(ConsoleFormatter.generateLogTitle(title: title, colorCode: colorCode, prefixSuffix: prefixSuffix, fillCharacter: fillCharacter, divider: divider, lineLength: lineLength));
+    
+    String? callerInfo;
 
     if (showCallerPathInfo) {
       final caller =
           StackFrame.fromStackTrace(customStackTrace ?? StackTrace.current)[3];
-      final clickablePath =
+      callerInfo =
           'package:${caller.package}/${caller.packagePath}:${caller.line}:${caller.column}';
-      formattedString.writeln(ConsoleFormatter.colorize(
-          ConsoleFormatter.padLine(clickablePath), colorCode));
     }
 
-    formattedString.writeln(ConsoleFormatter.colorize(
-        ConsoleFormatter.padLine(ConsoleFormatter.fillText(totalLength,
-            fillCharacter: fillCharacter)),
-        colorCode));
+    formattedString.writeln(ConsoleFormatter.generateLogDetail(detail: detail, colorCode: colorCode, callerInfo: callerInfo));
+
+    formattedString.writeln(ConsoleFormatter.generateLogEnd(fillCharacter: fillCharacter, lineLength: lineLength, colorCode: colorCode));
 
     return formattedString.toString();
   }
@@ -243,7 +222,7 @@ class CustomLogger {
     String title,
     String detail,
     String colorCode, {
-    int totalLength = 128,
+    int lineLength = 128,
     String? fillCharacter,
     String divider = ' ',
     String? prefixSuffix,
@@ -252,11 +231,11 @@ class CustomLogger {
   }) {
     // if (!kDebugMode) return;
 
-    final formattedLog = generateFormattedLogString(
+    final formattedLog = _generateFormattedLogString(
       title,
       detail,
       colorCode,
-      totalLength: totalLength,
+      lineLength: lineLength,
       fillCharacter: fillCharacter,
       divider: divider,
       prefixSuffix: prefixSuffix,
@@ -300,13 +279,16 @@ class CustomLogger {
     );
 
     if (instance.throwExceptionOnError) {
-      throw Exception(generateFormattedLogString(
-        instance.logLevelTitle.error,
-        object.toString(),
-        ConsoleFormatter.consoleColorCodes.red,
-        prefixSuffix: instance.logLevelPrefixSuffix.error,
-        showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
-      ));
+      throw CustomLoggerException(
+          title: instance.logLevelTitle.error,
+          detail: object.toString(),
+          message: _generateFormattedLogString(
+            instance.logLevelTitle.error,
+            object.toString(),
+            ConsoleFormatter.consoleColorCodes.red,
+            prefixSuffix: instance.logLevelPrefixSuffix.error,
+            showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+          ));
     }
   }
 
