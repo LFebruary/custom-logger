@@ -56,6 +56,13 @@ void main() {
     });
   });
 
+  test('Test default color codes', () {
+    expect(ConsoleFormatter.consoleColorCodes.cyan, ConsoleFormatter.defaultLogLevelColorCodes.info);
+    expect(ConsoleFormatter.consoleColorCodes.red, ConsoleFormatter.defaultLogLevelColorCodes.error);
+    expect(ConsoleFormatter.consoleColorCodes.green, ConsoleFormatter.defaultLogLevelColorCodes.success);
+    expect(ConsoleFormatter.consoleColorCodes.orange, ConsoleFormatter.defaultLogLevelColorCodes.warning);
+  });
+
   group('Test custom formatting', () {
     test('Pad line with -', () {
       final paddedText =

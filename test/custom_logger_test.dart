@@ -167,6 +167,138 @@ void main() {
     });
   });
 
+  group('Test prefix/suffix change', () {
+    test('Information log level', () {
+      CustomLogger.info('Info test');
+
+      var textLines = filterLines(logLevelStartChecks.info);
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect('💬'.allMatches(textLines[0]).length, 2);
+      expect(textLines[0].contains('Information'), true);
+      expect(textLines[1].contains('Info test'), true);
+      expect(
+          textLines[2].contains('custom_logger/test/custom_logger_test.dart'),
+          true);
+
+      CustomLogger.setInfoPrefixAndSuffix('INFO🤫');
+      CustomLogger.info('Info test');
+
+      textLines = filterLines(logLevelStartChecks.info);
+
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect(textLines[0].contains('💬'), false);
+      expect(textLines[0].contains('Information'), true);
+      expect(textLines[1].contains('Info test'), true);
+      expect(
+          textLines[2].contains('custom_logger/test/custom_logger_test.dart'),
+          true);
+
+      expect('INFO🤫'.allMatches(textLines[0]).length, 2);
+    });
+
+    test('Warning log level', () {
+      CustomLogger.warning('Warning test');
+
+      var textLines = filterLines(logLevelStartChecks.warning);
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect('💢'.allMatches(textLines[0]).length, 2);
+
+      expect(textLines[0].contains('Warning'), true);
+      expect(textLines[1].contains('Warning test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      CustomLogger.setWarningPrefixAndSuffix('WARNING');
+      CustomLogger.warning('Warning test');
+
+      textLines = filterLines(logLevelStartChecks.warning);
+
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect(textLines[0].contains('💢'), false);
+
+      expect(textLines[0].contains('Warning'), true);
+      expect(textLines[1].contains('Warning test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      expect('WARNING'.allMatches(textLines[0]).length, 2);
+    });
+
+    test('Error log level', () {
+      CustomLogger.error('Error test');
+
+      var textLines = filterLines(logLevelStartChecks.error);
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect('⛔'.allMatches(textLines[0]).length, 2);
+
+      expect(textLines[0].contains('Error'), true);
+      expect(textLines[1].contains('Error test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      CustomLogger.setErrorPrefixAndSuffix('🤬😡');
+      CustomLogger.error('Error test');
+
+      textLines = filterLines(logLevelStartChecks.error);
+
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect(textLines[0].contains('⛔'), false);
+
+      expect(textLines[0].contains('Error'), true);
+      expect(textLines[1].contains('Error test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      expect('🤬😡'.allMatches(textLines[0]).length, 2);
+    });
+
+    test('Success log level', () {
+      CustomLogger.success('Success test');
+
+      var textLines = filterLines(logLevelStartChecks.success);
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect('✅'.allMatches(textLines[0]).length, 2);
+
+      expect(textLines[0].contains('Success'), true);
+      expect(textLines[1].contains('Success test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      CustomLogger.setSuccessPrefixAndSuffix('🟢🟢🟢');
+      CustomLogger.success('Success test');
+
+      textLines = filterLines(logLevelStartChecks.success);
+
+      expect(textLines.length, 4);
+      expect('='.allMatches(textLines.last).length, 128);
+
+      expect(textLines[0].contains('='), true);
+      expect(textLines[0].contains('✅'), false);
+
+      expect(textLines[0].contains('Success'), true);
+      expect(textLines[1].contains('Success test'), true);
+      expect(textLines[2].contains('test/custom_logger_test.dart'), true);
+
+      expect('🟢🟢🟢'.allMatches(textLines[0]).length, 2);
+    });
+  });
+
   group('Test package info change', () {
     test('Information log level', () {
       CustomLogger.info('Info test with caller info');
@@ -268,7 +400,9 @@ void main() {
       expect(consoleOutput.contains('✅'), true);
       expect(consoleOutput.contains('test/custom_logger_test.dart'), false);
       expect(filterLines(logLevelStartChecks.success).length, 3);
-      expect('='.allMatches(filterLines(logLevelStartChecks.success).last).length, 128);
+      expect(
+          '='.allMatches(filterLines(logLevelStartChecks.success).last).length,
+          128);
     });
   });
 
