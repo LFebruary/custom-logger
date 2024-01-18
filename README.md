@@ -77,7 +77,7 @@ For more advanced usage and specific scenarios, refer to the examples provided i
 
 ## Issues and Feedback
 
-Please report any issues or provide feedback on the [GitHub repository](link/to/github).
+Please report any issues or provide feedback on the [GitHub repository](https://github.com/LFebruary/custom-logger/issues).
 
 ## License
 
