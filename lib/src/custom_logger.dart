@@ -1,11 +1,43 @@
+import 'dart:ui';
 import 'package:custom_logger/src/console_formatter.dart';
 import 'package:custom_logger/src/models/console_log_level_text.dart';
 import 'package:custom_logger/src/models/custom_logger_exception.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/widgets.dart';
 
 /// A custom logger class for handling console output with color formatting.
 class CustomLogger {
+  /// Singleton instance of the CustomLogger class
+  static CustomLogger _singleton = CustomLogger._privateConstructor();
+
+  FlutterExceptionHandler? _originalOnError;
+  ErrorCallback? _originalDispatcherError;
+  FirebaseCrashlytics? _firebaseCrashlytics;
+
+  static void logToFirebase(FirebaseCrashlytics crashlytics) async {
+    _singleton._firebaseCrashlytics = crashlytics;
+  }
+
+  static void catchUnhandledExceptions(Function()? onError) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    _singleton._originalOnError = FlutterError.onError;
+    _singleton._originalDispatcherError = PlatformDispatcher.instance.onError;
+
+    FlutterError.onError = (FlutterErrorDetails errorDetails) async {
+      error(errorDetails.exceptionAsString(), stackTrace: errorDetails.stack);
+      onError?.call();
+    };
+
+    PlatformDispatcher.instance.onError = (errorThrown, stack) {
+      error(errorThrown.toString(), stackTrace: stack);
+      return true;
+    };
+  }
+
+  CustomLogger._privateConstructor();
+
   List<void Function(Object? message)> listeners = [];
 
   static void addListener(void Function(Object? message) listener) {
@@ -14,11 +46,10 @@ class CustomLogger {
 
   static void reset() {
     _singleton.listeners = [];
-    _singleton = CustomLogger();
+    FlutterError.onError = _singleton._originalOnError;
+    PlatformDispatcher.instance.onError = _singleton._originalDispatcherError;
+    _singleton = CustomLogger._privateConstructor();
   }
-
-  /// Singleton instance of the CustomLogger class
-  static CustomLogger _singleton = CustomLogger();
 
   /// Retrieves the singleton instance of the CustomLogger class.
   static CustomLogger get instance => _singleton;
@@ -177,9 +208,14 @@ class CustomLogger {
     bool showCallerPathInfo = true,
   }) {
     final formattedString = StringBuffer();
-    formattedString
-        .writeln(ConsoleFormatter.generateLogTitle(title: title, colorCode: colorCode, prefixSuffix: prefixSuffix, fillCharacter: fillCharacter, divider: divider, lineLength: lineLength));
-    
+    formattedString.writeln(ConsoleFormatter.generateLogTitle(
+        title: title,
+        colorCode: colorCode,
+        prefixSuffix: prefixSuffix,
+        fillCharacter: fillCharacter,
+        divider: divider,
+        lineLength: lineLength));
+
     String? callerInfo;
 
     if (showCallerPathInfo) {
@@ -189,9 +225,13 @@ class CustomLogger {
           'package:${caller.package}/${caller.packagePath}:${caller.line}:${caller.column}';
     }
 
-    formattedString.writeln(ConsoleFormatter.generateLogDetail(detail: detail, colorCode: colorCode, callerInfo: callerInfo));
+    formattedString.writeln(ConsoleFormatter.generateLogDetail(
+        detail: detail, colorCode: colorCode, callerInfo: callerInfo));
 
-    formattedString.writeln(ConsoleFormatter.generateLogEnd(fillCharacter: fillCharacter, lineLength: lineLength, colorCode: colorCode));
+    formattedString.writeln(ConsoleFormatter.generateLogEnd(
+        fillCharacter: fillCharacter,
+        lineLength: lineLength,
+        colorCode: colorCode));
 
     return formattedString.toString();
   }
@@ -249,10 +289,10 @@ class CustomLogger {
       }
     }
 
-    print(formattedLog);
+    debugPrint(formattedLog);
 
     if (instance.lineBreaksAfterLog > 0) {
-      print('\n' * instance.lineBreaksAfterLog);
+      debugPrint('\n' * instance.lineBreaksAfterLog);
     }
   }
 
@@ -289,6 +329,20 @@ class CustomLogger {
             prefixSuffix: instance.logLevelPrefixSuffix.error,
             showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
           ));
+    } else if (!kDebugMode && _singleton._firebaseCrashlytics != null) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        information: [
+          _generateFormattedLogString(
+            instance.logLevelTitle.error,
+            object.toString(),
+            ConsoleFormatter.consoleColorCodes.red,
+            prefixSuffix: instance.logLevelPrefixSuffix.error,
+            showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+          )
+        ],
+      );
     }
   }
 
@@ -350,5 +404,46 @@ class CustomLogger {
       prefixSuffix: instance.logLevelPrefixSuffix.warning,
       showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
     );
+  }
+
+  static void wtf(
+    Object? object, {
+    bool? showCallerPathInfo,
+  }) {
+    logFormattedMessage(
+      instance.logLevelTitle.wtf,
+      object.toString(),
+      ConsoleFormatter.consoleColorCodes.red,
+      prefixSuffix: instance.logLevelPrefixSuffix.wtf,
+      showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+    );
+
+    final message = _generateFormattedLogString(
+          instance.logLevelTitle.wtf,
+          object.toString(),
+          ConsoleFormatter.consoleColorCodes.red,
+          prefixSuffix: instance.logLevelPrefixSuffix.wtf,
+          showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+        );
+
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        null,
+        information: [
+          _generateFormattedLogString(
+            instance.logLevelTitle.error,
+            object.toString(),
+            ConsoleFormatter.consoleColorCodes.red,
+            prefixSuffix: instance.logLevelPrefixSuffix.error,
+            showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+          )
+        ],
+        fatal: true,
+      );
+
+    throw CustomLoggerException(
+        title: instance.logLevelTitle.wtf,
+        detail: object.toString(),
+        message: message);
   }
 }

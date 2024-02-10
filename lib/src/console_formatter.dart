@@ -104,17 +104,24 @@ class ConsoleFormatter {
   /// Default prefix and suffix for different log levels.
   ///
   /// Contains default symbols or emojis for different log levels like info, error, success, and warning.
-  static const defaultLogLevelPrefixSuffix =
-      ConsoleLogLevelText(info: '💬', error: '⛔', success: '✅', warning: '💢');
+  static const defaultLogLevelPrefixSuffix = ConsoleLogLevelText(
+    info: '💬',
+    error: '⛔',
+    success: '✅',
+    warning: '💢',
+    wtf: '😲',
+  );
 
   /// Default color codes for different log levels.
   ///
   /// Provides default color codes corresponding to different log levels like info, error, success, and warning.
   static final defaultLogLevelColorCodes = ConsoleLogLevelText(
-      info: consoleColorCodes.cyan,
-      error: consoleColorCodes.red,
-      success: consoleColorCodes.green,
-      warning: consoleColorCodes.orange);
+    info: consoleColorCodes.cyan,
+    error: consoleColorCodes.red,
+    success: consoleColorCodes.green,
+    warning: consoleColorCodes.orange,
+    wtf: consoleColorCodes.red,
+  );
 
   /// Default titles for different log levels.
   ///
@@ -123,7 +130,8 @@ class ConsoleFormatter {
       info: 'Information',
       error: 'Error',
       success: 'Success',
-      warning: 'Warning');
+      warning: 'Warning',
+      wtf: 'WTF (What a terrible failure)');
 
   /// Pads the provided [content] with the specified character to signify a line in the console.
   ///
