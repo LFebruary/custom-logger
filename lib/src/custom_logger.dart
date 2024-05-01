@@ -419,27 +419,27 @@ class CustomLogger {
     );
 
     final message = _generateFormattedLogString(
-          instance.logLevelTitle.wtf,
+      instance.logLevelTitle.wtf,
+      object.toString(),
+      ConsoleFormatter.consoleColorCodes.red,
+      prefixSuffix: instance.logLevelPrefixSuffix.wtf,
+      showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
+    );
+
+    FirebaseCrashlytics.instance.recordError(
+      error,
+      null,
+      information: [
+        _generateFormattedLogString(
+          instance.logLevelTitle.error,
           object.toString(),
           ConsoleFormatter.consoleColorCodes.red,
-          prefixSuffix: instance.logLevelPrefixSuffix.wtf,
+          prefixSuffix: instance.logLevelPrefixSuffix.error,
           showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
-        );
-
-      FirebaseCrashlytics.instance.recordError(
-        error,
-        null,
-        information: [
-          _generateFormattedLogString(
-            instance.logLevelTitle.error,
-            object.toString(),
-            ConsoleFormatter.consoleColorCodes.red,
-            prefixSuffix: instance.logLevelPrefixSuffix.error,
-            showCallerPathInfo: showCallerPathInfo ?? instance.logCallerInfo,
-          )
-        ],
-        fatal: true,
-      );
+        )
+      ],
+      fatal: true,
+    );
 
     throw CustomLoggerException(
         title: instance.logLevelTitle.wtf,
